@@ -1,80 +1,34 @@
-/* Basic Reset */
+.textbox{
+    background-color: rgba(55, 55, 55, 0.5);
+    border-radius: 10%;
+    width: 20vw;
+    height:5vh;
+}
+
+/* FLOOR SELECTION */
 body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f4f4f4;
+    /* Subtle, clean background gradient */
+    background: linear-gradient(135deg, #F9FAFB 0%, #EFF6FF 100%);
+    font-family: 'Inter', sans-serif;
 }
-
-.floor-plan-container {
-    width: 90vw;
-    max-width: 1300px;
-    position: relative;
-    padding-bottom: 74.07%;
-    background-image: url('image.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.nav-button {
-    position: absolute;
-    padding: 8px 15px;
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-    font-size: 20px;
-    color: #000;
-    background-color: rgba(255, 255, 255, 0.7);
-    border: 2px solid #000;
+.floor-card {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     cursor: pointer;
-    border-radius: 10px;
-    transition:
-        transform 0.2s ease-out,
-        box-shadow 0.2s ease-out,
-        background-color 0.2s ease-out;
 }
-
-.nav-button:hover {
-    background-color: rgba(255, 255, 255, 0.9);
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+.floor-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: #1D4ED8;
 }
-
-.nav-button:active {
-    transform: translateY(0) scale(1.0);
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+/* Message box styling */
+.message-box {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }
-
-
-#btn-bedroom {
-    top: 54%;
-    left: 15%;
-}
-
-#btn-bath-left {
-    top: 35%;
-    left: 8.5%;
-}
-
-#btn-bath-right {
-    top: 19%;
-    left: 82%;
-}
-
-#btn-living {
-    top: 41.5%;
-    left: 39%;
-}
-
-#btn-kitchen {
-    top: 54%;
-    left: 75%;
-}
-
-#btn-dining {
-    top: 28%;
-    left: 76%;
+.message-box.show {
+    opacity: 1;
 }

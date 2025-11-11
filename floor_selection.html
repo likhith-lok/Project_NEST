@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose FLOOR - PROJECT NEST</title>
+    <!-- Load Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind for Inter font and simple colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'nest-blue': '#1D4ED8',
+                        'nest-light': '#EFF6FF', // Lighter blue for background
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- Message Box for feedback -->
+    <div id="messageBox" class="message-box bg-green-500 text-white p-3 rounded-lg shadow-xl">
+        Floor Selected!
+    </div>
+
+    <!-- Main Selection Container -->
+    <div class="w-full max-w-3xl text-center">
+
+        <!-- Title -->
+        <h1 class="text-4xl font-extrabold text-gray-800 tracking-wide mb-3">
+            PROJECT NEST
+        </h1>
+        <p class="text-xl font-light text-gray-500 mb-10">
+            Select the floor you wish to manage.
+        </p>
+
+        <!-- Floor Options Grid (Responsive) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <!-- Card 1: First Floor -->
+            <div id="firstFloor"
+                 class="floor-card bg-white p-8 rounded-xl shadow-lg border-2 border-transparent">
+                <!-- Icon: Inline SVG for minimalist look (Building/House icon) -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-nest-blue mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-3m0 0a2 2 0 012-2h2a2 2 0 012 2v3m-7 0h7"/>
+                </svg>
+                <h2 class="text-2xl font-bold text-gray-800">First Floor</h2>
+                <p class="mt-2 text-sm text-gray-500">
+                    
+                </p>
+            </div>
+
+            <!-- Card 2: Second Floor -->
+            <div id="secondFloor"
+                 class="floor-card bg-white p-8 rounded-xl shadow-lg border-2 border-transparent">
+                <!-- Icon: Inline SVG for minimalist look (Up Arrow/Level icon) -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-nest-blue mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+                <h2 class="text-2xl font-bold text-gray-800">Second Floor</h2>
+                <p class="mt-2 text-sm text-gray-500">
+                    
+                </p>
+            </div>
+
+        </div>
+        
+        <p class="mt-12 text-xs text-center text-gray-500">
+            A Novel Smart Home Automation Model Integrating IoT, Sensor Intelligence, and Energy-Efficient Control Mechanisms
+        </p>
+
+    </div>
+</body>
+<script src="bundle.js"></script>
+</html>
