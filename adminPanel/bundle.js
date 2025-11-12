@@ -28,7 +28,7 @@ function handleLogin(event) {
     login_showFeedback("Access Granted. Welcome, ".concat(name, "! Redirecting..."), 'success');
     setTimeout(function () {
         document.getElementById("loginMainForm").style.display = "none";
-        document.getElementById("appContainer").style.display = "flex";
+        document.getElementById("floorSelection").style.display = "flex";
     }, 1000);
     return false;
 }
@@ -52,8 +52,13 @@ function showFeedback(message, type) {
 }
 function selectFloor(floorName) {
     showFeedback("Navigating to ".concat(floorName, " Plan..."));
-    floorSelection.classList.add('hidden');
-    floorPlanView.classList.remove('hidden');
+    document.getElementById("floorSelection").style.display = "none";
+    document.getElementById("appContainer").style.display = "flex";
+    document.getElementById(floorName + 'PlanView').style.display = "flex";
+}
+function __INTERNALS_hideAllFloors() {
+    document.getElementById("Ground FloorPlanView").style.display = "none";
+    document.getElementById("First FloorPlanView").style.display = "none";
 }
 function showAreaFeedback(areaName, deselect) {
     if (deselect === void 0) { deselect = false; }
@@ -65,14 +70,15 @@ function showAreaFeedback(areaName, deselect) {
     console.log("User clicked on: ".concat(areaName));
 }
 function goBackToSelection() {
-    floorPlanView.classList.add('hidden');
-    floorSelection.classList.remove('hidden');
+    document.getElementById('appContainer').style.display = "none";
+    floorSelection.style.display = "flex";
+    __INTERNALS_hideAllFloors();
 }
-document.getElementById("secondFloor").addEventListener("click", function () { showFeedback("Second Floor has not been implemented yet"); });
+document.getElementById("secondFloor").addEventListener("click", function () { selectFloor("First Floor"); });
 document.getElementById("backToFloorSelect").addEventListener("click", function () {
     goBackToSelection();
 });
-document.getElementById("firstFloor").addEventListener("click", function () { selectFloor("First Floor"); });
+document.getElementById("firstFloor").addEventListener("click", function () { selectFloor("Ground Floor"); });
 var _loop_1 = function (ii) {
     var ele = classes[ii];
     ele.addEventListener("click", function () {
@@ -107,8 +113,9 @@ var _loop_1 = function (ii) {
             element.innerText = SELECTED_ROOMS[jj];
             var buttonNames = ["On", "Off", "Auto"];
             var _loop_3 = function (k) {
-                var subElement = document.createElement("div");
-                //subElement.classList.add PENDING
+                var subElement = document.createElement("button");
+                subElement.innerText = buttonNames[k];
+                subElement.classList.add("subOption");
                 subElement.setAttribute("id", "roomControlOption-" + ele.id + buttonNames[k]);
                 subElement.style.zIndex = "999";
                 subElement.style.cursor = "pointer";

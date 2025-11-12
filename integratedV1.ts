@@ -35,7 +35,7 @@ function login_showFeedback(message: string, type = 'success') {
 
             setTimeout(() => {
                 document.getElementById("loginMainForm").style.display = "none"
-                document.getElementById("appContainer").style.display = "flex"
+                document.getElementById("floorSelection").style.display = "flex"
             }, 1000);
 
             return false;
@@ -60,8 +60,14 @@ function showFeedback(message: string, type = 'success') {
 
 function selectFloor(floorName: string) {
     showFeedback(`Navigating to ${floorName} Plan...`);
-    floorSelection.classList.add('hidden');
-    floorPlanView.classList.remove('hidden');
+    document.getElementById("floorSelection").style.display = "none";
+    document.getElementById("appContainer").style.display = "flex";
+    document.getElementById(floorName+'PlanView').style.display = "flex"
+}
+
+function __INTERNALS_hideAllFloors(){
+    document.getElementById("Ground FloorPlanView").style.display="none";
+    document.getElementById("First FloorPlanView").style.display="none";
 }
 
 function showAreaFeedback(areaName: string, deselect=false) {
@@ -72,15 +78,16 @@ function showAreaFeedback(areaName: string, deselect=false) {
 }
 
 function goBackToSelection() {
-    floorPlanView.classList.add('hidden');
-    floorSelection.classList.remove('hidden');
+    document.getElementById('appContainer').style.display="none";
+    floorSelection.style.display = "flex";
+    __INTERNALS_hideAllFloors()
 }
 
-document.getElementById("secondFloor").addEventListener("click", () => {showFeedback("Second Floor has not been implemented yet")})
+document.getElementById("secondFloor").addEventListener("click", () => {selectFloor("First Floor")})
 document.getElementById("backToFloorSelect").addEventListener("click", () => {
     goBackToSelection()
 })
-document.getElementById("firstFloor").addEventListener("click", () => {selectFloor("First Floor")})
+document.getElementById("firstFloor").addEventListener("click", () => {selectFloor("Ground Floor")})
 for (let ii=0; ii <classes!.length; ii++){
     const ele = <HTMLElement>classes[ii]!;
     ele.addEventListener("click", ()=>{
