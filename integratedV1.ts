@@ -5,6 +5,43 @@ const floorPlanView = document.getElementById('floorPlanView');
 const messageBox = document.getElementById('messageBox');
 
 
+function login_showFeedback(message: string, type = 'success') {
+            const box = document.getElementById('messageBox');
+            box.textContent = message;
+            box.className = 'message-box show p-3 rounded-lg shadow-xl'; // Reset classes
+
+            if (type === 'success') {
+                box.classList.add('bg-green-500', 'text-white');
+            } else {
+                box.classList.add('bg-red-500', 'text-white');
+            }
+
+            // Hide the box after 3 seconds
+            setTimeout(() => {
+                box.classList.remove('show');
+            }, 3000);
+        }
+
+        function handleLogin(event: Event) {
+            event.preventDefault(); 
+
+            const name = (<HTMLInputElement>document.getElementById('name')).value;
+            //const password = (<HTMLInputElement>document.getElementById('password')).value;
+
+            console.log("Attempting login...");
+            console.log("Name:", name);
+
+            login_showFeedback(`Access Granted. Welcome, ${name}! Redirecting...`, 'success');
+
+            setTimeout(() => {
+                document.getElementById("loginMainForm").style.display = "none"
+                document.getElementById("appContainer").style.display = "flex"
+            }, 1000);
+
+            return false;
+        }
+
+(<HTMLFormElement>document.getElementById("loginForm")).onsubmit = (event: Event = undefined) => {handleLogin(event)}
 function showFeedback(message: string, type = 'success') {
     messageBox.textContent = message;
 

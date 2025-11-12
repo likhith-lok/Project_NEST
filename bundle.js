@@ -3,6 +3,39 @@ var classes = document.getElementsByClassName("nav-button");
 var floorSelection = document.getElementById('floorSelection');
 var floorPlanView = document.getElementById('floorPlanView');
 var messageBox = document.getElementById('messageBox');
+function login_showFeedback(message, type) {
+    if (type === void 0) { type = 'success'; }
+    var box = document.getElementById('messageBox');
+    box.textContent = message;
+    box.className = 'message-box show p-3 rounded-lg shadow-xl'; // Reset classes
+    if (type === 'success') {
+        box.classList.add('bg-green-500', 'text-white');
+    }
+    else {
+        box.classList.add('bg-red-500', 'text-white');
+    }
+    // Hide the box after 3 seconds
+    setTimeout(function () {
+        box.classList.remove('show');
+    }, 3000);
+}
+function handleLogin(event) {
+    event.preventDefault();
+    var name = document.getElementById('name').value;
+    //const password = (<HTMLInputElement>document.getElementById('password')).value;
+    console.log("Attempting login...");
+    console.log("Name:", name);
+    login_showFeedback("Access Granted. Welcome, ".concat(name, "! Redirecting..."), 'success');
+    setTimeout(function () {
+        document.getElementById("loginMainForm").style.display = "none";
+        document.getElementById("appContainer").style.display = "flex";
+    }, 1000);
+    return false;
+}
+document.getElementById("loginForm").onsubmit = function (event) {
+    if (event === void 0) { event = undefined; }
+    handleLogin(event);
+};
 function showFeedback(message, type) {
     if (type === void 0) { type = 'success'; }
     messageBox.textContent = message;
