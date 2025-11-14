@@ -25,3 +25,5 @@ Scripts/pip3.exe
 Scripts/pip.exe
 Scripts/normalizer.exe
 Scripts/flask.exe
+adminPanel/node_modules
+./adminPanel/node_modules

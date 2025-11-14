@@ -1,9 +1,11 @@
+import { io } from "./node_modules/socket.io-client/build/esm/index";
 let SELECTED_ROOMS: Array<string> = []
 const classes = document.getElementsByClassName("nav-button")
 const floorSelection = document.getElementById('floorSelection');
 const floorPlanView = document.getElementById('floorPlanView');
 const messageBox = document.getElementById('messageBox');
 
+const socket= io("http://<IP>:8080")
 
 function login_showFeedback(message: string, type = 'success') {
             const box = document.getElementById('messageBox');

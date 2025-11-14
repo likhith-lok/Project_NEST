@@ -3,6 +3,7 @@ import os, json, requests
 #import serial
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask_socketio import SocketIO, emit
 #from deepface import DeepFace
 #import paho.mqtt.publish as mqtt
 import threading
@@ -92,6 +93,7 @@ import time
 
 app = Flask(__name__)
 CORS(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 os.makedirs("profiles", exist_ok=True)
 os.makedirs("schedules", exist_ok=True)
 os.makedirs("images", exist_ok=True)
@@ -138,6 +140,13 @@ DEVICESCOORESPONDENCE_ARD1 = {
     "Bedroom": [7] ,
     "Living Area": [8]
 }
+
+@socketio.on('message')
+def handle_message(msg):
+    data = json.loads(msg)
+    print(f"ESP32 Temp: {data['temp']}")
+    # Broadcast to all connected TS clients
+    socketio.emit('temperature', data)
 
 @app.route("/componentControl", methods=["POST"])
 def componentControl():
@@ -253,7 +262,7 @@ def run_flask():
     app.run(host='0.0.0.0', port=8888)
 
 threading.Thread(target=run_flask).start()
-
+socketio.run(app, host="0.0.0.0", port=5000)
 
 #st.title("Smart Home Registration")
 
