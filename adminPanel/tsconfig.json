@@ -5,7 +5,9 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "outFile": "bundle.js"
+    "outFile": "bundle.js",
+    "lib": ["es2017", "dom"],
+    "target": "es2017"
   },
   "include": ["./*", "adminPanel/adminPanel.ts"],
   "exclude": ["./.venv/"]

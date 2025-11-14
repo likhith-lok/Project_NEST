@@ -14,3 +14,5 @@ Scripts/activate.bat
 Scripts/deactivate.bat
 Scripts/Activate.ps1
 Scripts/activate
+Scripts/*.*
+Scripts

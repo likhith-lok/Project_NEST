@@ -16,67 +16,69 @@ MQTT_HOST = "localhost"
 
 #-=-=-=-=-=-=-=
 
-import serial
+LOGS = {} # {LogType: LogMsg}
+
+#import serial
 import time
 
-class ArduinoController:
-    """
-    Manages the serial connection and communication with the Arduino.
-    """
-    def __init__(self, port='/dev/ttyACM0', baudrate=9600, timeout=1):
-        """
-        Initializes the serial port connection.
-        
-        Note: The 'port' needs to be adjusted based on your OS and Arduino setup:
-              - Windows: 'COM3', 'COM4', etc.
-              - Linux: '/dev/ttyACM0' or '/dev/ttyUSB0'
-              - Mac: '/dev/cu.usbmodemXXXX'
-        """
-        self.port = port
-        self.baudrate = baudrate
-        self.timeout = timeout
-        self.ser = None
-
-    def connect(self):
-        """Establishes the serial connection."""
-        try:
-            self.ser = serial.Serial(
-                self.port, 
-                self.baudrate, 
-                timeout=self.timeout
-            )
-            # Give the Arduino time to reset after the connection is opened
-            time.sleep(2) 
-            print(f"Successfully connected to Arduino on {self.port}")
-            return True
-        except serial.SerialException as e:
-            print(f"Error connecting to Arduino on port {self.port}: {e}")
-            self.ser = None
-            return False
-    def send_command(self, device_pin, state):
-        """
-        Sends a command to control a specific device (pin).
-        
-        Args:
-            device_pin (int): The Arduino digital pin number (e.g., 7 or 8).
-            state (str): 'ON' or 'OFF'.
-        """
-        if not self.ser or not self.ser.is_open:
-            # Reconnect logic here...
-            pass 
-        # Construct the command string: "D[PIN]:[STATE]"
-        command_str = f"D{device_pin}:{state.upper()}"
-        print(command_str)
-        # Encode and add the newline terminator
-        full_command = (command_str + '\n').encode('utf-8')
-        print(full_command)
-        try:
-            self.ser.write(full_command)
-            response = self.ser.readline().decode('utf-8').strip()
-            print("Response: ", response)
-            return response
-        except Exception as e:
-            return f"ERR:SEND_FAILED: {e}"
+#class ArduinoController:
+#    """
+#    Manages the serial connection and communication with the Arduino.
+#    """
+#    def __init__(self, port='/dev/ttyACM0', baudrate=9600, timeout=1):
+#        """
+#        Initializes the serial port connection.
+#        
+#        Note: The 'port' needs to be adjusted based on your OS and Arduino setup:
+#              - Windows: 'COM3', 'COM4', etc.
+#              - Linux: '/dev/ttyACM0' or '/dev/ttyUSB0'
+#              - Mac: '/dev/cu.usbmodemXXXX'
+#        """
+#        self.port = port
+#        self.baudrate = baudrate
+#        self.timeout = timeout
+#        self.ser = None
+#
+#    def connect(self):
+#        """Establishes the serial connection."""
+#        try:
+#            self.ser = serial.Serial(
+#                self.port, 
+#                self.baudrate, 
+#                timeout=self.timeout
+#            )
+#            # Give the Arduino time to reset after the connection is opened
+#            time.sleep(2) 
+#            print(f"Successfully connected to Arduino on {self.port}")
+#            return True
+#        except serial.SerialException as e:
+#            print(f"Error connecting to Arduino on port {self.port}: {e}")
+#            self.ser = None
+#            return False
+#    def send_command(self, device_pin, state):
+#        """
+#        Sends a command to control a specific device (pin).
+#        
+#        Args:
+#            device_pin (int): The Arduino digital pin number (e.g., 7 or 8).
+#            state (str): 'ON' or 'OFF'.
+#        """
+#        if not self.ser or not self.ser.is_open:
+#            # Reconnect logic here...
+#            pass 
+#        # Construct the command string: "D[PIN]:[STATE]"
+#        command_str = f"D{device_pin}:{state.upper()}"
+#        print(command_str)
+#        # Encode and add the newline terminator
+#        full_command = (command_str + '\n').encode('utf-8')
+#        print(full_command)
+#        try:
+#            self.ser.write(full_command)
+#            response = self.ser.readline().decode('utf-8').strip()
+#            print("Response: ", response)
+#            return response
+#        except Exception as e:
+#            return f"ERR:SEND_FAILED: {e}"
 
 # --- Example of Integration with Flask Logic ---
 # (Assuming you have a Flask app set up)
@@ -128,8 +130,8 @@ os.makedirs("images", exist_ok=True)
 #arduinoFetcherThread.start()
 
 DEVICESCOORESPONDENCE_ARD1 = {
-    "Dining": [2],
-    "Kitchen":[3],
+    "Dining": [22],
+    "Kitchen":[23],
     "Lighting": [4],
     "Door": [5],
     "Bathroom": [6],
@@ -142,7 +144,7 @@ def componentControl():
     data = request.json
     print(data)
     for i in DEVICESCOORESPONDENCE_ARD1[data["room"]]:
-        requests.post("http:// < ESP URL >/componentControl", json=json.dumps({"pin": i, "command": data["command"] }))
+        requests.post("http://10.235.116.152/componentControl", json={"pin": i, "command": data["command"] }, headers={"Content-Type": "application/json"})
     #ARDUINO = None
     #DBToUse = DEVICESCOORESPONDENCE_ARD1
     #if data["room"] in DEVICESCOORESPONDENCE_ARD1.keys():
@@ -227,10 +229,31 @@ def trigger_time():
 
     return jsonify({"triggered": triggered})
 
+@app.route("/registerAlert", methods=["POST"])
+def registerAlert():
+    global LOGS
+    data = request.json
+    LOGS[data["severity"]] = data["message"]
+    return jsonify({"response": "Added Warning"})
+    
+
+
+@app.route("/alertUser", methods=["GET"])
+def alertUser():
+    return jsonify(LOGS)
+
+@app.route("/resetLog", methods=["GET"])
+def resetLog():
+    global LOGS
+    LOGS = {}
+    return jsonify({"response": "Cleared Logs!"})
+
+
 def run_flask():
     app.run(host='0.0.0.0', port=8888)
 
 threading.Thread(target=run_flask).start()
+
 
 #st.title("Smart Home Registration")
 

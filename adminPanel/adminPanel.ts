@@ -155,4 +155,32 @@ let FRAME_SHOW = false;
     document.getElementById("Ground FloorPlanView").appendChild(iFrame);
     showFeedback("Live feed has been turned on");
     FRAME_SHOW = true;
+});
+
+(<HTMLButtonElement>document.getElementById("clearLog")).addEventListener("click", () => {
+    const res = fetch("http://localhost:8888/resetLog")
+    for (let jj=0; jj < document.getElementById("log").children.length; jj ++){
+        document.getElementById("log").removeChild(document.getElementById("log").children[jj]);
+    }
+    document.getElementById("clearLog").style.display = "none";
+    showFeedback("Resetted Logs!")
 })
+
+async function fetchLogs(){
+    for (let jj=0; jj < document.getElementById("log").children.length; jj ++){
+        document.getElementById("log").removeChild(document.getElementById("log").children[jj]);
+    }
+    const res = await fetch("http://localhost:8888/alertUser")
+    const logs = await res.json()
+    const actualLogs = (<any>Object).entries(logs)
+    for (let ii=0; ii<actualLogs.length; ii++){
+        document.getElementById("clearLog").style.display = "flex";
+    const element = document.createElement("div");
+    element.innerText=actualLogs[ii][1];
+    if (actualLogs[ii][0] == "severe") element.style.background="rgba(245, 11, 11, 0.65)";
+    element.classList.add("logElement")
+    document.getElementById("log").appendChild(element)
+    }
+}
+
+setInterval(fetchLogs, 1000)

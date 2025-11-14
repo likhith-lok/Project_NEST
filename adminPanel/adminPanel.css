@@ -272,3 +272,28 @@ button#soil-button:active {
     border-width: 2.5px;
     position:relative;
 }
+
+div#log{
+    display:flex;
+    position:absolute;
+    top:20%;
+    left: 2%;
+    
+    
+}
+.logElement{
+    display:flex;
+    font-weight: 700;
+    border-radius: 5px;
+    width: auto;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+div#clearLog{
+    
+}
