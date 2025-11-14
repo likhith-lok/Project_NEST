@@ -16,3 +16,12 @@ Scripts/Activate.ps1
 Scripts/activate
 Scripts/*.*
 Scripts
+pyvenv.cfg
+pyvenv.cfg
+pyvenv.cfg
+Scripts/pythonw.exe
+Scripts/python.exe
+Scripts/pip3.exe
+Scripts/pip.exe
+Scripts/normalizer.exe
+Scripts/flask.exe

@@ -174,7 +174,7 @@ def register():
     #face_id = abs(hash(name)) % 10000
 
     profile = {"name": "Likhith", "rooms": rooms}
-    with open(f"profiles/{profile["name"]}.json", "w") as f:
+    with open(f"""profiles/{profile["name"]}.json""", "w") as f:
         json.dump(profile, f)
     return jsonify({"status":"received"})
     #schedule = {"face_id": face_id, "room": room, "time": time, "devices": devices}
