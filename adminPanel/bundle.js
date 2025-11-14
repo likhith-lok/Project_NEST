@@ -144,3 +144,18 @@ var _loop_1 = function (ii) {
 for (var ii = 0; ii < classes.length; ii++) {
     _loop_1(ii);
 }
+var FRAME_SHOW = false;
+document.getElementById("liveFeed").addEventListener("click", function () {
+    if (FRAME_SHOW) {
+        document.getElementById("Ground FloorPlanView").removeChild(document.getElementById("espLiveFrame"));
+        showFeedback("Live feed has been turned off");
+        FRAME_SHOW = false;
+        return;
+    }
+    var iFrame = document.createElement('img');
+    iFrame.setAttribute("id", "espLiveFrame");
+    iFrame.src = "http://10.235.116.74:81/stream";
+    document.getElementById("Ground FloorPlanView").appendChild(iFrame);
+    showFeedback("Live feed has been turned on");
+    FRAME_SHOW = true;
+});
