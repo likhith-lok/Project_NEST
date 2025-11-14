@@ -1,11 +1,23 @@
-import { io } from "./node_modules/socket.io-client/build/esm/index";
+//import { io } from "./node_modules/socket.io-client/build/esm/index";
+import { io } from "socket.io-client";
 let SELECTED_ROOMS: Array<string> = []
 const classes = document.getElementsByClassName("nav-button")
 const floorSelection = document.getElementById('floorSelection');
 const floorPlanView = document.getElementById('floorPlanView');
 const messageBox = document.getElementById('messageBox');
 
-const socket= io("http://<IP>:8080")
+let TEMP_HUMID_SHOW = false;
+
+const socket= io("http://<IP>:8080");
+let TEMP = 0;
+let HUMIDITY = 0;
+socket.on("connect", (balls: any=null)=>{console.log("WEBSOCKET SERVER CONNECTED!")})
+socket.on("temperature", (data: any)=>{
+    TEMP = data.temp;
+    HUMIDITY = data.humidity;
+    const parent = document.getElementById("tempHumid");
+    parent.innerHTML=`Temperature: ${TEMP}\nHumidity: ${HUMIDITY}`;
+});
 
 function login_showFeedback(message: string, type = 'success') {
             const box = document.getElementById('messageBox');
@@ -169,6 +181,14 @@ let FRAME_SHOW = false;
     }
     document.getElementById("clearLog").style.display = "none";
     showFeedback("Resetted Logs!")
+});
+
+(<HTMLButtonElement>document.getElementById("temperatureHumidity")).addEventListener("click", ()=>{
+    if (!TEMP_HUMID_SHOW){
+    document.getElementById("tempHumid").style.display="flex";}
+    else{
+        document.getElementById("tempHumid").style.display="none";
+    }
 })
 
 async function fetchLogs(){
