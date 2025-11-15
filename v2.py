@@ -4,6 +4,8 @@ import os, json, requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
+from simple_websocket import Server, ConnectionClosed
+import asyncio
 #from deepface import DeepFace
 #import paho.mqtt.publish as mqtt
 import threading
@@ -134,26 +136,45 @@ os.makedirs("images", exist_ok=True)
 DEVICESCOORESPONDENCE_ARD1 = {
     "Dining": [22],
     "Kitchen":[23],
-    "Lighting": [4],
-    "Door": [5],
-    "Bathroom": [6],
-    "Bedroom": [7] ,
-    "Living Area": [8]
+    "Lighting": [27],
+    "Bathroom": [25],
+    "Bedroom": [2] ,
+    #"Living Area": [15]
 }
 
-@socketio.on('message')
-def handle_message(msg):
-    data = json.loads(msg)
-    print(f"ESP32 Temp: {data['temp']}")
+#@socketio.on('message')
+#def handle_message(msg):
+##    data = json.loads(msg)
+ #   print(f"ESP32 Temp: {data}")
     # Broadcast to all connected TS clients
-    socketio.emit('temperature', data)
+#    socketio.emit('temperature', data)
+
+@app.route("/ws", websocket=True)
+def ws():
+    ws = Server.accept(request.environ)
+    try:
+        while True:
+            msg = ws.receive()
+            if not msg: continue
+            try:
+                data = json.loads(msg)
+                print("ESP sent:", data)
+                ws.send(json.dumps({"status": "ok"}))
+            except json.JSONDecodeError:
+                print("Invalid JSON from ESP:", msg)
+
+    except ConnectionClosed:
+        print("ESP disconnected")
+    return ''
+
 
 @app.route("/componentControl", methods=["POST"])
 def componentControl():
     data = request.json
     print(data)
     for i in DEVICESCOORESPONDENCE_ARD1[data["room"]]:
-        requests.post("http://10.235.116.152/componentControl", json={"pin": i, "command": data["command"] }, headers={"Content-Type": "application/json"})
+        print(i)
+        requests.post("http://10.127.136.152/componentControl", json={"pin": i, "command": data["command"] }, headers={"Content-Type": "application/json"})
     #ARDUINO = None
     #DBToUse = DEVICESCOORESPONDENCE_ARD1
     #if data["room"] in DEVICESCOORESPONDENCE_ARD1.keys():
@@ -262,7 +283,7 @@ def run_flask():
     app.run(host='0.0.0.0', port=8888)
 
 threading.Thread(target=run_flask).start()
-socketio.run(app, host="0.0.0.0", port=5000)
+#socketio.run(app, host="0.0.0.0", port=5000)
 
 #st.title("Smart Home Registration")
 

@@ -168,7 +168,7 @@ let FRAME_SHOW = false;
     }
     const iFrame = document.createElement('img')
     iFrame.setAttribute("id", "espLiveFrame")
-    iFrame.src = "http://10.235.116.74:81/stream"
+    iFrame.src = "http://10.127.136.74:81/stream"
     document.getElementById("Ground FloorPlanView").appendChild(iFrame);
     showFeedback("Live feed has been turned on");
     FRAME_SHOW = true;

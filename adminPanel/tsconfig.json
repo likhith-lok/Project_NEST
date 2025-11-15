@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
-    "module": "system",
+    "module": "esnext",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "outFile": "bundle.js",
     "lib": ["es2017", "dom"],
     "target": "es2017",
     "moduleResolution": "node",
@@ -13,5 +12,5 @@
     "skipLibCheck": true,
   },
   "include": ["./*", "adminPanel/adminPanel.ts"],
-  "exclude": ["./.venv/"]
+  "exclude": ["./.venv/", "adminPanel/node_modules", "node_modules"]
 }
